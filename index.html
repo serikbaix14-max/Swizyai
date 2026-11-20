@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru" data-theme="default" data-mode="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SWIZY AI</title>
+<meta name="theme-color" content="#0f1115">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<!-- Тема применяется до отрисовки страницы, чтобы не было «вспышки» -->
+<script src="js/storage.js"></script>
+<script src="js/themes.js"></script>
+<script>Swizy.Theme.init();</script>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="scrim" id="scrim"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Чаты">
+    <div class="brand"><span class="logo">S</span><b>SWIZY AI</b></div>
+    <button class="btn primary wide" id="newChat">＋ Новый чат</button>
+    <input class="search" id="search" type="search" placeholder="Поиск чатов" aria-label="Поиск чатов">
+    <nav class="chat-list" id="chatList"></nav>
+    <div class="side-foot">
+      <button class="menu-item" id="openSettings">⚙️ Настройки</button>
+      <button class="menu-item" id="openTheme">🎨 Оформление</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn" id="menuBtn" aria-label="Меню">☰</button>
+      <div class="title" id="chatTitle">SWIZY AI</div>
+      <button class="icon-btn" id="themeBtn" aria-label="Оформление">🎨</button>
+    </header>
+    <section class="messages" id="messages" aria-live="polite"></section>
+    <footer class="composer-wrap">
+      <div class="composer">
+        <textarea id="input" rows="1" placeholder="Напишите сообщение…" aria-label="Сообщение"></textarea>
+        <button class="send" id="sendBtn" aria-label="Отправить">➤</button>
+      </div>
+      <p class="hint">SWIZY AI может ошибаться. Проверяйте важную информацию.</p>
+    </footer>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <header><h2 id="mTitle">Настройки</h2><button class="icon-btn" id="closeModal" aria-label="Закрыть">✕</button></header>
+    <div class="modal-body">
+      <nav class="tabs" id="tabs">
+        <button data-tab="appearance">🎨 Оформление</button>
+        <button data-tab="general">⚙️ Общие</button>
+        <button data-tab="data">🗂 Данные</button>
+        <button data-tab="about">ℹ️ О проекте</button>
+      </nav>
+      <div class="panes">
+        <section class="pane" data-pane="appearance">
+          <div class="pane-head">
+            <div><h3>Тема оформления</h3><p class="muted">Нажмите «Просмотр», чтобы увидеть тему на всём интерфейсе до применения.</p></div>
+            <div class="seg" id="modeSeg" role="group" aria-label="Режим">
+              <button data-m="auto">Авто</button><button data-m="light">☀️ Светлая</button><button data-m="dark">🌙 Тёмная</button>
+            </div>
+          </div>
+          <p class="muted small" id="modeNote"></p>
+          <div class="gallery" id="gallery"></div>
+        </section>
+        <section class="pane" data-pane="general">
+          <label class="field">Ваше имя<input data-s="name" maxlength="40" placeholder="Как к вам обращаться"></label>
+          <label class="field">Провайдер ИИ
+            <select data-s="provider"><option value="mock">Демо (без сервера)</option><option value="server">Сервер (/api/chat)</option></select>
+          </label>
+          <label class="field" id="endpointRow">Адрес API<input data-s="endpoint" placeholder="/api/chat"></label>
+          <label class="field">Системная инструкция<textarea data-s="system" rows="3"></textarea></label>
+          <label class="field">Температура <output></output><input type="range" data-s="temperature" min="0" max="1.5" step="0.1"></label>
+          <label class="field">Размер шрифта <output></output><input type="range" data-s="fontSize" min="13" max="20" step="1"></label>
+          <label class="check-row"><input type="checkbox" data-s="enterToSend"> Отправлять по Enter (Shift+Enter — новая строка)</label>
+        </section>
+        <section class="pane" data-pane="data">
+          <p class="muted">Все данные хранятся только в вашем браузере (localStorage).</p>
+          <div class="row"><button class="btn" id="exportBtn">⬇️ Экспорт чатов (JSON)</button><button class="btn" id="clearBtn">🗑 Удалить все чаты</button><button class="btn" id="resetBtn">♻️ Сбросить настройки и тему</button></div>
+        </section>
+        <section class="pane" data-pane="about">
+          <h3>SWIZY AI 1.0</h3>
+          <p class="muted">Чат-интерфейс с системой из 10 тем. Готов к подключению настоящей ИИ-модели: см. <code>js/ai.js</code> и <code>server.js</code>.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="preview-bar" id="previewBar" hidden>
+  <span id="previewText">Предпросмотр</span>
+  <button class="btn ghost" id="previewCancel">Отмена</button>
+  <button class="btn primary" id="previewApply">Применить</button>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="js/md.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/gallery.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
